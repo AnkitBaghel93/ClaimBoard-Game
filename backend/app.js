@@ -16,10 +16,19 @@ const server = http.createServer(app);
 // Connect to MongoDB
 conn();
 
-// Middleware
+const allowedOrigins = ['https://claimboard-game-frontend.onrender.com'];
+
 app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
+  origin: function (origin, callback) {
+    // allow requests with no origin like mobile apps or curl
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 app.use(express.json());
 app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
@@ -40,7 +49,7 @@ app.use((req, res) => {
 // Setup Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://claimboard-game-frontend.onrender.com',
     credentials: true,
   },
 });
