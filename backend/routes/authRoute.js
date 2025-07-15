@@ -93,7 +93,7 @@ router.post('/forgot-password', async (req, res) => {
       },
     });
 
-    const resetUrl = `http://localhost:3000/reset-password/${token}`;
+    const resetUrl = `https://claimboard-game-frontend.onrender.com/reset-password/${token}`;
    
 
     await transporter.sendMail({
@@ -156,7 +156,7 @@ router.get(
 
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-    const redirectUrl = `http://localhost:3000/google-auth-success?token=${token}`;
+    const redirectUrl = `https://claimboard-game-frontend.onrender.com/google-auth-success?token=${token}`;
     console.log('[Callback] Redirecting to:', redirectUrl);
 
     res.redirect(redirectUrl);
